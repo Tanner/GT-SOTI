@@ -32,8 +32,9 @@ word_frequencies = dict()
 word_locations = dict()
 
 words_count = 0
+line_word_count = []
 
-for line in file:
+for line_index, line in enumerate(file):
   # If this is a empty line, skip it
   if len(line.rstrip()) == 0:
     continue
@@ -41,7 +42,10 @@ for line in file:
   # Do analysis
   words = line.split()
 
-  for index, word in enumerate(words):
+  words_count += len(words)
+  line_word_count.append(len(words))
+
+  for word_index, word in enumerate(words):
     # Remove all non-alphanumeric characters
     word = re.sub(r'\W+', '', word)
 
@@ -51,15 +55,18 @@ for line in file:
     else:
       word_frequencies[word] = 1
 
-    if word in word_locations:
-      word_locations[word].append(words_count + index)
-    else:
+    if word not in word_locations:
       word_locations[word] = []
-      word_locations[word].append(words_count + index)
+
+    word_locations[word].append({
+      "line": line_index,
+      "word": word_index,
+    })
 
   words_count += len(words)
 
 json_data["metadata"]["word count"] = words_count
+json_data["metadata"]["line word counts"] = line_word_count
 
 json_data["frequencies"] = word_frequencies
 json_data["locations"] = word_locations
