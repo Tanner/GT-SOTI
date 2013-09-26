@@ -18,7 +18,11 @@ json_data = {}
 # Get the basic data
 result = re.search('(\d{2})_(\d{2})_(\d{4})_(\w+)_(\w+).txt', filename)
 
-date = result.group(1) + "/" + result.group(2) + "/" + result.group(3)
+date = {
+  "month": result.group(1),
+  "day": result.group(2),
+  "year": result.group(3)
+};
 first_name = result.group(4)
 last_name = result.group(5)
 
