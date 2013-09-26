@@ -49,6 +49,9 @@ for line_index, line in enumerate(file):
     # Remove all non-alphanumeric characters
     word = re.sub(r'\W+', '', word)
 
+    if len(word) == 0:
+      continue;
+
     # Add to our data
     if word in word_frequencies:
       word_frequencies[word] += 1
