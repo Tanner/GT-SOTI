@@ -98,7 +98,6 @@ function drawAddresses(svg, json, width, height) {
       .attr("width", function(d) { return d["width"]; })
       .attr("height", word_height)
       .on("mouseover", function(d) {
-        console.log(d["word"]);
         d3.selectAll(".word-" + d["word"] + ".word").classed("selected", true);
       })
       .on("mouseout", function(d) {
