@@ -12,8 +12,8 @@ var context = svg.append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // Load the JSON
-d3.json("data/08_28_2013_Bud_Peterson.json", function(error, data2013) {
-  d3.json("data/08_28_2012_Bud_Peterson.json", function(error, data2012) {
+d3.json("Data/08_28_2013_Bud_Peterson.json", function(error, data2013) {
+  d3.json("Data/08_28_2012_Bud_Peterson.json", function(error, data2012) {
     drawAddresses(context, [data2012, data2013], width, height);
     updateCounts();
   });
