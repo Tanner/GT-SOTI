@@ -113,12 +113,6 @@ function drawAddresses(svg, json, width, height) {
       .attr("x", function(d) { return d["x"]; })
       .attr("y", function(d) { return d["y"]; })
       .attr("width", function(d) { return d["width"]; })
-      .attr("height", y.rangeBand())
-      .on("mouseover", function(d) {
-        d3.selectAll(".word-" + d["word"] + ".word").classed("selected", true);
-      })
-      .on("mouseout", function(d) {
-        d3.selectAll(".word-" + d["word"] + ".word").classed("selected", false);
-      });
+      .attr("height", y.rangeBand());
   });
 }
