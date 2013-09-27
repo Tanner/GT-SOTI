@@ -22,7 +22,7 @@ $("input").bind("keyup", function(e) {
   $("span#phrase").text(phrase);
 
   d3.selectAll(".word").classed("selected", function(d, i) {
-    return d["word"] == phrase;
+    return d["word"].toLowerCase() == phrase.toLowerCase();
   });
 });
 
