@@ -107,6 +107,9 @@ function drawAddresses(svg, json, width, height) {
       .enter()
       .append("rect")
       .attr("class", function(d) { return "word-" + d["word"] + " word"; })
+      .classed("selected", function(d, i) {
+        return d["word"].toLowerCase() == $("input").val().toLowerCase();
+      })
       .attr("x", function(d) { return d["x"]; })
       .attr("y", function(d) { return d["y"]; })
       .attr("width", function(d) { return d["width"]; })
