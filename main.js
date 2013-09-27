@@ -24,6 +24,13 @@ $("input").bind("keyup", function(e) {
   d3.selectAll(".word").classed("selected", function(d, i) {
     return d["word"].toLowerCase() == phrase.toLowerCase();
   });
+
+  var addresses = d3.selectAll(".address");
+  
+  addresses.select("text")
+    .text(function(d) {
+      return addresses.selectAll(".selected").size();
+    });
 });
 
 function drawAddresses(svg, json, width, height) {
@@ -114,5 +121,13 @@ function drawAddresses(svg, json, width, height) {
       .attr("y", function(d) { return d["y"]; })
       .attr("width", function(d) { return d["width"]; })
       .attr("height", y.rangeBand());
+
+    address.append("text")
+      .attr("x", year.rangeBand() / 2)
+      .attr("y", 5)
+      .attr("text-anchor", "middle")
+      .text(function(d) {
+        return address.selectAll(".selected").size();
+      });
   });
 }
