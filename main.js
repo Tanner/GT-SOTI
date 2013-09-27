@@ -85,7 +85,7 @@ function drawAddresses(svg, json, width, height) {
     }
 
     addressData["y"] = d3.scale.ordinal()
-      .rangeRoundBands([0, height], 0.5)
+      .rangeBands([0, height], 0.5)
       .domain(lines);
   });
 
@@ -109,7 +109,7 @@ function drawAddresses(svg, json, width, height) {
   var words = address.append("g")
     .attr("class", "words")
     .attr("transform", function(d) {
-      return "translate(0, 10)";
+      return "translate(0, 25)";
     });
 
   words.selectAll("rect")
