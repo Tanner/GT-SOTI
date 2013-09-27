@@ -14,7 +14,7 @@ var context = svg.append("g")
 // Load the JSON
 d3.json("data/08_28_2013_Bud_Peterson.json", function(error, data2013) {
   d3.json("data/08_28_2012_Bud_Peterson.json", function(error, data2012) {
-    drawAddresses(context, [data2013, data2012], width, height);
+    drawAddresses(context, [data2012, data2013], width, height);
     updateCounts();
   });
 });
