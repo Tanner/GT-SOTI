@@ -15,6 +15,7 @@ var context = svg.append("g")
 d3.json("data/08_28_2013_Bud_Peterson.json", function(error, data2013) {
   d3.json("data/08_28_2012_Bud_Peterson.json", function(error, data2012) {
     drawAddresses(context, [data2013, data2012], width, height);
+    updateCounts();
   });
 });
 
@@ -27,13 +28,20 @@ $("input").bind("keyup", function(e) {
     return d["word"].toLowerCase() == phrase.toLowerCase();
   });
 
-  var addresses = d3.selectAll(".address");
-  
-  addresses.select("text.count")
-    .text(function(d) {
-      return addresses.selectAll(".selected").size();
-    });
+  updateCounts();
 });
+
+function updateCounts() {
+  var addresses = d3.selectAll(".address");
+
+  addresses.each(function() {
+    var address = d3.select(this);
+    address.select("text.count")
+      .text(function(d) {
+        return address.selectAll(".selected").size();
+      });
+  });
+}
 
 function drawAddresses(svg, json, width, height) {
   var year = d3.scale.ordinal()
@@ -131,8 +139,5 @@ function drawAddresses(svg, json, width, height) {
     .attr("class", "count")
     .attr("x", year.rangeBand() / 2)
     .attr("y", 20)
-    .attr("text-anchor", "middle")
-    .text(function(d) {
-      return address.selectAll(".selected").size();
-    });
+    .attr("text-anchor", "middle");
 }
