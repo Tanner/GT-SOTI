@@ -16,8 +16,8 @@ d3.json("data/08_28_2013_Bud_Peterson.json", function(error, json) {
   drawAddresses(context, [json], width, height);
 });
 
-d3.select("button").on("click", function() {
-  var phrase = $("input").val();
+$("input").bind("keyup", function(e) {
+  var phrase = $(this).val();
 
   $("span#phrase").text(phrase);
 

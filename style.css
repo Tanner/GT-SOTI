@@ -14,11 +14,7 @@
 }
 
 #search input[name="query"] {
-  width: 90%;
-}
-
-#search button {
-  width: 8%;
+  width: 100%;
 }
 
 #search p {
