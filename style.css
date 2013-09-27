@@ -31,3 +31,19 @@
   width: 100%;
   height:550px;
 }
+
+svg text {
+  font-family: "Helvetica";
+}
+
+svg .axis path {
+  fill: none;
+}
+
+.word {
+  fill: #ddd;
+}
+
+.word.selected {
+  fill: #f00;
+}
