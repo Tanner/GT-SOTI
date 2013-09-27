@@ -56,10 +56,10 @@ for line_index, line in enumerate(file):
     # Remove all non-alphanumeric characters
     word = re.sub(r'\W+', '', word)
 
-    single_line_word_count += 1
-
     if len(word) == 0:
       continue;
+
+    single_line_word_count += 1
 
     # Add to our data
     if word in word_frequencies:
@@ -72,7 +72,7 @@ for line_index, line in enumerate(file):
 
     word_locations[word].append({
       "line": line_number,
-      "word": word_index,
+      "word": single_line_word_count - 1,
     })
 
   line_word_count.append(single_line_word_count)
