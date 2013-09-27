@@ -16,6 +16,16 @@ d3.json("data/08_28_2013_Bud_Peterson.json", function(error, json) {
   drawAddresses(context, [json], width, height);
 });
 
+d3.select("button").on("click", function() {
+  var phrase = $("input").val();
+
+  $("span#phrase").text(phrase);
+
+  d3.selectAll(".word").classed("selected", function(d, i) {
+    return d["word"] == phrase;
+  });
+});
+
 function drawAddresses(svg, json, width, height) {
   var year = d3.scale.ordinal()
     .rangeRoundBands([0, width], 0.1);
