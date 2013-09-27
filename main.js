@@ -20,7 +20,7 @@ d3.json("data/08_28_2013_Bud_Peterson.json", function(error, data2013) {
 });
 
 $("input").bind("keyup", function(e) {
-  var phrase = $(this).val();
+  var phrase = $(this).val().split(" ")[0];
 
   $("span#phrase").text(phrase);
 
