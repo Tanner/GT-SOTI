@@ -37,28 +37,15 @@ function drawAddresses(svg, json, width, height) {
   var year = d3.scale.ordinal()
     .rangeRoundBands([0, width], 0.1);
 
-  var president = d3.scale.ordinal()
-    .rangeRoundBands([0, width], 0.1);
-
   var yearAxis = d3.svg.axis()
     .scale(year)
     .orient("top");
 
-  var presidentAxis = d3.svg.axis()
-    .scale(president)
-    .orient("top");
-
   year.domain(json.map(function(d) { return d["metadata"]["date"]["year"]; }));
-  president.domain(json.map(function(d) { return d["metadata"]["last name"]; }));
 
   svg.append("g")
     .attr("class", "year axis")
     .call(yearAxis);
-
-  svg.append("g")
-    .attr("class", "president axis")
-    .attr("transform", "translate(0, 20)")
-    .call(presidentAxis);
 
   // Draw words now
   json.forEach(function(addressData) {
@@ -106,7 +93,15 @@ function drawAddresses(svg, json, width, height) {
       .append("g")
       .attr("class", "address")
       .attr("transform", function(d) {
-        return "translate(" + year(d["metadata"]["date"]["year"]) + ", 25)";
+        return "translate(" + year(d["metadata"]["date"]["year"]) + ", 20)";
+      });
+
+    address.append("text")
+      .attr("x", year.rangeBand() / 2)
+      .attr("y", 0)
+      .attr("text-anchor", "middle")
+      .text(function(d) {
+        return d["metadata"]["last name"];
       });
 
     address.selectAll("rect")
