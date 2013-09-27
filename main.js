@@ -69,7 +69,7 @@ function drawAddresses(svg, json, width, height) {
     }
 
     var y = d3.scale.ordinal()
-      .rangeRoundBands([20, height], 0.5)
+      .rangeRoundBands([0, height], 0.5)
       .domain(lines);
 
     var wordCount = addressData["metadata"]["word count"];
