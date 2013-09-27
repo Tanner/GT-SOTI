@@ -49,16 +49,6 @@ function drawAddresses(svg, json, width, height) {
 
   // Draw words now
   json.forEach(function(addressData) {
-    var lines = []
-
-    for (var i = 0; i < addressData["metadata"]["line word counts"].length; i++) {
-      lines[i] = i;
-    }
-
-    var y = d3.scale.ordinal()
-      .rangeRoundBands([0, height], 0.5)
-      .domain(lines);
-
     var wordCount = addressData["metadata"]["word count"];
     var lineWordCounts = addressData["metadata"]["line word counts"];
 
@@ -77,7 +67,7 @@ function drawAddresses(svg, json, width, height) {
         var obj = {
           "word": word,
           "x": wordInstance["word"] * word_width,
-          "y": y(wordInstance["line"]),
+          "y": wordInstance["line"],
           "width": word_width
         }
 
@@ -86,43 +76,53 @@ function drawAddresses(svg, json, width, height) {
 
       addressData["words"] = words;
     }
-
-    var address = svg.selectAll("g.address")
-      .data(json)
-      .enter()
-      .append("g")
-      .attr("class", "address")
-      .attr("transform", function(d) {
-        return "translate(" + year(d["metadata"]["date"]["year"]) + ", 20)";
-      });
-
-    address.append("text")
-      .attr("x", year.rangeBand() / 2)
-      .attr("y", 0)
-      .attr("text-anchor", "middle")
-      .text(function(d) {
-        return d["metadata"]["last name"];
-      });
-
-    address.selectAll("rect")
-      .data(function(d) { return d["words"]; })
-      .enter()
-      .append("rect")
-      .attr("class", function(d) { return "word-" + d["word"] + " word"; })
-      .classed("selected", function(d, i) {
-        return d["word"].toLowerCase() == $("input").val().toLowerCase();
-      })
-      .attr("x", function(d) { return d["x"]; })
-      .attr("y", function(d) { return d["y"]; })
-      .attr("width", function(d) { return d["width"]; })
-      .attr("height", y.rangeBand());
-
-    address.append("text")
-      .attr("x", year.rangeBand() / 2)
-      .attr("y", 5)
-      .attr("text-anchor", "middle")
-      .text(function(d) {
-        return address.selectAll(".selected").size();
-      });
   });
+
+  var address = svg.selectAll("g.address")
+    .data(json)
+    .enter()
+    .append("g")
+    .attr("class", "address")
+    .attr("transform", function(d) {
+      return "translate(" + year(d["metadata"]["date"]["year"]) + ", 20)";
+    });
+
+  address.append("text")
+    .attr("x", year.rangeBand() / 2)
+    .attr("y", 0)
+    .attr("text-anchor", "middle")
+    .text(function(d) {
+      return d["metadata"]["last name"];
+    });
+
+  var lines = []
+
+  for (var i = 0; i < address.datum()["metadata"]["line word counts"].length; i++) {
+    lines[i] = i;
+  }
+
+  var y = d3.scale.ordinal()
+    .rangeRoundBands([0, height], 0.5)
+    .domain(lines);
+
+  address.selectAll("rect")
+    .data(function(d) { return d["words"]; })
+    .enter()
+    .append("rect")
+    .attr("class", function(d) { return "word-" + d["word"] + " word"; })
+    .classed("selected", function(d, i) {
+      return d["word"].toLowerCase() == $("input").val().toLowerCase();
+    })
+    .attr("x", function(d) { return d["x"]; })
+    .attr("y", function(d) { return y(d["y"]); })
+    .attr("width", function(d) { return d["width"]; })
+    .attr("height", y.rangeBand());
+
+  address.append("text")
+    .attr("x", year.rangeBand() / 2)
+    .attr("y", 5)
+    .attr("text-anchor", "middle")
+    .text(function(d) {
+      return address.selectAll(".selected").size();
+    });
 }
