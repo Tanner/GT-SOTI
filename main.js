@@ -45,9 +45,15 @@ function drawAddresses(svg, json, width, height) {
 
   // Draw words now
   json.forEach(function(addressData) {
-    var y = d3.scale.linear()
-      .rangeRound([20, height])
-      .domain([0, addressData["metadata"]["line word counts"].length]);
+    var lines = []
+
+    for (var i = 0; i < addressData["metadata"]["line word counts"].length; i++) {
+      lines[i] = i;
+    }
+
+    var y = d3.scale.ordinal()
+      .rangeRoundBands([20, height], 0.5)
+      .domain(lines);
 
     var wordCount = addressData["metadata"]["word count"];
     var lineWordCounts = addressData["metadata"]["line word counts"];
@@ -77,15 +83,13 @@ function drawAddresses(svg, json, width, height) {
       addressData["words"] = words;
     }
 
-    console.log(json);
-
     var address = svg.selectAll("g.address")
       .data(json)
       .enter()
       .append("g")
       .attr("class", "address")
       .attr("transform", function(d) {
-        return "translate(" + year(d["metadata"]["date"]["year"]) + ", 5)";
+        return "translate(" + year(d["metadata"]["date"]["year"]) + ", 25)";
       });
 
     address.selectAll("rect")
@@ -96,7 +100,7 @@ function drawAddresses(svg, json, width, height) {
       .attr("x", function(d) { return d["x"]; })
       .attr("y", function(d) { return d["y"]; })
       .attr("width", function(d) { return d["width"]; })
-      .attr("height", word_height)
+      .attr("height", y.rangeBand())
       .on("mouseover", function(d) {
         d3.selectAll(".word-" + d["word"] + ".word").classed("selected", true);
       })
