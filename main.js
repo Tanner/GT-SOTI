@@ -62,7 +62,7 @@ function drawAddresses(svg, json, width, height) {
       for (var i in wordInstances) {
         var wordInstance = wordInstances[i];
 
-        var word_width = width / lineWordCounts[wordInstance["line"]];
+        var word_width = year.rangeBand() / lineWordCounts[wordInstance["line"]];
 
         var obj = {
           "word": word,
@@ -85,7 +85,7 @@ function drawAddresses(svg, json, width, height) {
       .append("g")
       .attr("class", "address")
       .attr("transform", function(d) {
-        return "translate(" + year(d["metadata"]["date"]["year"]) + ", 35)";
+        return "translate(" + year(d["metadata"]["date"]["year"]) + ", 5)";
       });
 
     address.selectAll("rect")
