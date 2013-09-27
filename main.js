@@ -48,7 +48,7 @@ function drawAddresses(svg, json, width, height) {
     .call(yearAxis);
 
   // Draw words now
-  json.forEach(function(addressData) {
+  json.forEach(function(addressData, addressIndex) {
     var wordCount = addressData["metadata"]["word count"];
     var lineWordCounts = addressData["metadata"]["line word counts"];
 
@@ -65,6 +65,7 @@ function drawAddresses(svg, json, width, height) {
         var word_width = year.rangeBand() / lineWordCounts[wordInstance["line"]];
 
         var obj = {
+          "address index": addressIndex,
           "word": word,
           "x": wordInstance["word"] * word_width,
           "y": wordInstance["line"],
@@ -76,6 +77,16 @@ function drawAddresses(svg, json, width, height) {
 
       addressData["words"] = words;
     }
+
+    var lines = []
+
+    for (var i = 0; i < addressData["metadata"]["line word counts"].length; i++) {
+      lines[i] = i;
+    }
+
+    addressData["y"] = d3.scale.ordinal()
+      .rangeRoundBands([0, height], 0.5)
+      .domain(lines);
   });
 
   var address = svg.selectAll("g.address")
@@ -84,7 +95,7 @@ function drawAddresses(svg, json, width, height) {
     .append("g")
     .attr("class", "address")
     .attr("transform", function(d) {
-      return "translate(" + year(d["metadata"]["date"]["year"]) + ", 20)";
+      return "translate(" + year(d["metadata"]["date"]["year"]) + ", 10)";
     });
 
   address.append("text")
@@ -95,17 +106,13 @@ function drawAddresses(svg, json, width, height) {
       return d["metadata"]["last name"];
     });
 
-  var lines = []
+  var words = address.append("g")
+    .attr("class", "words")
+    .attr("transform", function(d) {
+      return "translate(0, 10)";
+    });
 
-  for (var i = 0; i < address.datum()["metadata"]["line word counts"].length; i++) {
-    lines[i] = i;
-  }
-
-  var y = d3.scale.ordinal()
-    .rangeRoundBands([0, height], 0.5)
-    .domain(lines);
-
-  address.selectAll("rect")
+  words.selectAll("rect")
     .data(function(d) { return d["words"]; })
     .enter()
     .append("rect")
@@ -114,9 +121,9 @@ function drawAddresses(svg, json, width, height) {
       return d["word"].toLowerCase() == $("input").val().toLowerCase();
     })
     .attr("x", function(d) { return d["x"]; })
-    .attr("y", function(d) { return y(d["y"]); })
+    .attr("y", function(d) { return json[d["address index"]].y(d["y"]); })
     .attr("width", function(d) { return d["width"]; })
-    .attr("height", y.rangeBand());
+    .attr("height", function(d) { return json[d["address index"]].y.rangeBand(); });
 
   address.append("text")
     .attr("class", "count")
