@@ -12,8 +12,10 @@ var context = svg.append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // Load the JSON
-d3.json("data/08_28_2013_Bud_Peterson.json", function(error, json) {
-  drawAddresses(context, [json], width, height);
+d3.json("data/08_28_2013_Bud_Peterson.json", function(error, data2013) {
+  d3.json("data/08_28_2012_Bud_Peterson.json", function(error, data2012) {
+    drawAddresses(context, [data2013, data2012], width, height);
+  });
 });
 
 $("input").bind("keyup", function(e) {
