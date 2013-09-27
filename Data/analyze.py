@@ -38,20 +38,25 @@ word_locations = dict()
 words_count = 0
 line_word_count = []
 
+line_number = -1
+
 for line_index, line in enumerate(file):
   # If this is a empty line, skip it
   if len(line.rstrip()) == 0:
     continue
 
+  line_number += 1
+
   # Do analysis
   words = line.split()
 
-  words_count += len(words)
-  line_word_count.append(len(words))
+  single_line_word_count = 0
 
   for word_index, word in enumerate(words):
     # Remove all non-alphanumeric characters
     word = re.sub(r'\W+', '', word)
+
+    single_line_word_count += 1
 
     if len(word) == 0:
       continue;
@@ -66,11 +71,13 @@ for line_index, line in enumerate(file):
       word_locations[word] = []
 
     word_locations[word].append({
-      "line": line_index,
+      "line": line_number,
       "word": word_index,
     })
 
-  words_count += len(words)
+  line_word_count.append(single_line_word_count)
+
+  words_count += single_line_word_count
 
 json_data["metadata"]["word count"] = words_count
 json_data["metadata"]["line word counts"] = line_word_count
